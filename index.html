@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Form Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-4 mb-4">Electrical Workbench</h1>
+    <div class="row">
+        
+        <!-- Input Column -->
+        <div class="col-md-4">
+            <h2 class="mb-4">Inputs</h2>
+            <form>
+                <!-- Solve For Dropdown -->
+                <div class="mb-3">
+                    <label for="solveFor" class="form-label">Solve For</label>
+                    <select class="form-select" id="solveFor">
+                        <option value="Power">Power</option>
+                        <option value="Voltage">Voltage</option>
+                        <option value="Current">Current</option>
+                    </select>
+                </div>
+
+                <!-- Power Input Group -->
+                <div class="mb-3">
+                    <label for="powerInputGroup" class="form-label">Power</label>
+                    <div class="input-group" id="powerInputGroup">
+                        <input type="number" step="any" class="form-control" id="powerInput" placeholder="Enter Power" style="width: 50%;">
+                        <select class="form-select" id="powerUnit" style="width: 25%;">
+                            <option value="W">W</option>
+                            <option value="kW">kW</option>
+                            <option value="MW">MW</option>
+                        </select>
+                    </div>
+                    <div id="powerWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
+                </div>
+
+                
+
+                <div class="mb-3">
+                    <label for="voltageInputGroup" class="form-label">Voltage</label>
+                    <div class="input-group" id="voltageInputGroup">
+                        <!-- Voltage Input -->
+                        <input type="number" step="any" class="form-control" id="voltageInput" placeholder="Enter Voltage" style="width: 45%;">
+                    
+
+                        <!-- Units Dropdown -->
+                        <select class="form-select" id="voltageUnit" style="width: 20%;">
+                            <option value="V">V</option>
+                            <option value="kV">kV</option>
+                            <option value="mV">mV</option>
+                        </select>
+                
+                        <!-- Voltage Type Dropdown -->
+                        <select class="form-select" id="voltageType" style="width: 35%;">
+                            <option value="Line-Line">Line-Line</option>
+                            <option value="Line-Neutral">Line-Neutral</option>
+                        </select>
+
+                        <div id="voltageWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
+                    </div>
+                </div>
+                
+                
+                
+                <!-- Current Input Group -->
+                <div class="row g-2 mb-3">
+                    <!-- Current Input -->
+                    <div class="col me-3">
+                        <label for="currentInput" class="form-label">Current (A)</label>
+                        <input type="number" step="any" class="form-control" id="currentInput" placeholder="Enter Current">
+                        <div id="currentWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
+                    </div>
+                    <!-- Power Factor Input -->
+                    <div class="col me-3">
+                        <label for="pfInput" class="form-label">Power Factor</label>
+                        <input type="number" step="any" class="form-control" id="pfInput" placeholder="Enter PF" value="1">
+                        <div id="pfWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
+                    </div>
+
+                    <!-- Phase Type Radio Buttons -->
+                    <div class="col">
+                        <label class="form-label">Phase Type</label>
+                        <div class="d-block">
+                            <!-- Single Phase (default and first option) -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="phaseType" id="singlePhase" value="Single Phase" checked>
+                                <label class="form-check-label" for="singlePhase">
+                                    Single Phase
+                                </label>
+                            </div>
+                            <!-- Three Phase -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="phaseType" id="threePhase" value="Three Phase">
+                                <label class="form-check-label" for="threePhase">
+                                    Three Phase
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Calculate Button with onclick attribute -->
+                <div class="mb-3">
+                    <button type="button" onclick="calculateResults()" class="btn btn-primary">Calculate</button>
+                </div>
+
+            </form>
+        </div>
+<!-- Results Column -->
+<div class="col-md-6 shadow"  id="resultsSection">
+    <h2 class="mb-4">Results</h2>
+    <div class="row g-4 text-center">
+        <!-- Power Result -->
+        <div class="col-md-4">
+            <p class="result-value" id="resultPower">---</p>
+            <p>Power</p>
+        </div>
+
+        <!-- Voltage Result -->
+        <div class="col-md-4">
+            <p class="result-value" id="resultVoltage">---</p>
+            <p>Voltage</p>
+        </div>
+
+        <!-- Current Result -->
+        <div class="col-md-4">
+            <p class="result-value" id="resultCurrent">---</p>
+            <p>Current</p>
+        </div>
+
+         <!-- Power Factor Result -->
+        <div class="col-md-4">
+            <p class="result-value" id="resultPf">---</p>
+            <p>Power Factor</p>
+        </div>
+
+        <!-- Phase Type Result -->
+        <div class="col-md-4">
+            <p class="result-value" id="resultPhaseType">---</p>
+            <p>Phase Type</p>
+        </div>
+
+        <!-- Voltage Type Result -->
+        <div class="col-md-4">
+            <p class="result-value"  id="resultVoltageType">---</p>
+            <p>Voltage Type</p>
+        </div>
+    </div>
+</div>
+
+        
+
+
+
+
+<script src="calculator.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

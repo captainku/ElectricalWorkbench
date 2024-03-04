@@ -1,0 +1,22 @@
+/* Custom CSS for the results section */
+#resultsSection {
+    padding-top: 30px; /* Add padding to the top for spacing */
+}
+
+.result-card {
+    border: none; /* Remove border from cards */
+    background-color: #f8f9fa; /* Set background color */
+    border-radius: 10px; /* Add border radius */
+}
+
+.result-value {
+    font-size: 24px; /* Set font size for result value */
+    color: #486581; /* Set text color */
+    margin-bottom: 5px; /* Add bottom margin for spacing */
+}
+
+.result-label {
+    font-size: 18px; /* Set font size for result label */
+    color: #6c757d; /* Set text color */
+    margin-bottom: 0; /* Remove bottom margin */
+}
