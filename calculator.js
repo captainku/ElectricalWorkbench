@@ -16,6 +16,10 @@ function calculateResults() {
     var powerResultUnit = "W";
     var currentResultUnit = "A";
     var voltageResultUnit = "V";
+    var powerAppResultUnit= "VA";
+    var powerReactiveResultUnit="Var"
+    var powerS = 0;
+    var powerQ = 0;
 
     // Convert all values to base units (Watts, Volts, Amps)
     power *= (powerUnit === 'kW' ? 1000 : (powerUnit === 'MW' ? 1000000 : 1));
@@ -58,10 +62,13 @@ function calculateResults() {
             currentResult = isThreePhase ? power / (3 * voltage *pf) : power / (voltage *pf);
         }
 
-        
         voltageResult = voltage;
         powerResult = power;
     }
+
+    //Calculate Other forms of Power
+    powerS = powerResult/pf;
+    powerQ = Math.sqrt((powerS*powerS)-(powerResult*powerResult));
 
     //Handle Unit management
     powerResultUnit = powerResult > 1000 ? "kW" : "W";
@@ -80,6 +87,10 @@ function calculateResults() {
     document.getElementById('resultPhaseType').textContent = phaseType;
     document.getElementById('resultVoltageType').textContent = voltageType;
     document.getElementById('resultPf').textContent = pf;
+    document.getElementById('resultPowerApp').textContent = powerS.toFixed(1)+ " " + powerAppResultUnit;
+    document.getElementById('resultPowerActive').textContent = powerResult.toFixed(1) + " " + powerResultUnit;
+    document.getElementById('resultPowerReactive').textContent = powerQ.toFixed(1) + " " + powerReactiveResultUnit;
+
 
 
 }

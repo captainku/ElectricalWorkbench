@@ -20,3 +20,25 @@
     color: #6c757d; /* Set text color */
     margin-bottom: 0; /* Remove bottom margin */
 }
+
+
+.advanced-results-divider {
+    position: relative;
+    text-align: center;
+    margin: 20px 0; /* Adjust the vertical spacing around the divider */
+}
+
+.advanced-results-divider hr {
+    border: 0;
+    height: 1px;
+    background-color: #ccc; /* Change the line color if needed */
+}
+
+.advanced-results-divider span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff; /* Match the background color of the container */
+    padding: 0 10px; /* Add some padding around the text */
+    top: -0.5em; /* Adjust this value to center the text vertically over the line */
+}
