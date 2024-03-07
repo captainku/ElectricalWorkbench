@@ -91,6 +91,8 @@ function calculateResults() {
     document.getElementById('resultPowerActive').textContent = powerResult.toFixed(1) + " " + powerResultUnit;
     document.getElementById('resultPowerReactive').textContent = powerQ.toFixed(1) + " " + powerReactiveResultUnit;
 
+        //draw chart
+        updateChart(powerResult, powerQ, powerS);
 
 
 }
@@ -172,4 +174,71 @@ function validateInput(inputElement, warningElementId) {
 }
 
 
+
+function updateChart(realPower, reactivePower, apparentPower) {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    if (window.myPowerTriangleChart) {
+        window.myPowerTriangleChart.destroy(); // Destroy the old chart instance if exists
+    }
+    window.myPowerTriangleChart = new Chart(ctx, {
+        type: 'scatter', // Use scatter chart for plotting individual points
+        data: {
+            datasets: [{
+                label: 'Real Power (P)',
+                data: [
+                    {x: 0, y: 0}, // Origin
+                    {x: realPower, y: 0} // End of Real Power (P) on x-axis
+                ],
+                borderColor: 'rgba(75, 192, 192, 1)', // Set Real Power line color
+                borderWidth: 2,
+                showLine: true,
+                fill: false
+            },
+            {
+                label: 'Reactive Power (Q)',
+                data: [
+                    {x: realPower, y: 0}, // Start from end of Real Power
+                    {x: realPower, y: reactivePower} // End of Reactive Power (Q)
+                ],
+                borderColor: 'rgba(255, 159, 64, 1)', // Set Reactive Power line color
+                borderWidth: 2,
+                showLine: true,
+                fill: false
+            },
+            {
+                label: 'Apparent Power (S)',
+                data: [
+                    {x: 0, y: 0}, // Origin
+                    {x: realPower, y: reactivePower} // Tip of the triangle representing apparent power
+                ],
+                backgroundColor: 'rgba(54, 162, 235, 1)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                showLine: true,
+                fill: false,
+                borderDash: [10,5] // Optional: Makes the hypotenuse a dashed line
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            },
+            elements: {
+                point:{
+                    radius: 0 // Hide data points for a cleaner look
+                }
+            }
+        }
+    });
+}
+
+// Example usage, call this function with actual values after calculation
+// updateChart(powerResult, powerQ, powerS);
 
