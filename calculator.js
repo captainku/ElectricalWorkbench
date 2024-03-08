@@ -1,3 +1,4 @@
+
 function calculateResults() {
     var solveFor = document.getElementById('solveFor').value;
     var power = parseFloat(document.getElementById('powerInput').value);
