@@ -8,6 +8,7 @@ function calculateResults() {
     var voltageType = document.getElementById('voltageType').value;
     var current = parseFloat(document.getElementById('currentInput').value);
     var pf = parseFloat(document.getElementById('pfInput').value);
+    var eff = parseFloat(document.getElementById('effInput').value);
     var phaseType = document.querySelector('input[name="phaseType"]:checked').value;
 
     var result = 0;
@@ -18,49 +19,59 @@ function calculateResults() {
     var currentResultUnit = "A";
     var voltageResultUnit = "V";
     var powerAppResultUnit= "VA";
-    var powerReactiveResultUnit="Var"
+    var powerReactiveResultUnit="Var";
     var powerS = 0;
     var powerQ = 0;
+    var inputHistory =""
+    var outputHistory ="";
+
 
     // Convert all values to base units (Watts, Volts, Amps)
-    power *= (powerUnit === 'kW' ? 1000 : (powerUnit === 'MW' ? 1000000 : 1));
-    voltage *= (voltageUnit === 'kV' ? 1000 : (voltageUnit === 'mV' ? 0.001 : 1));
+    power *= (powerUnit === 'kW' ? 1000 : 
+            (powerUnit === 'MW' ? 1000000 : 
+            (powerUnit === 'Hp' ? 745.7 : 1))); // 1 Horsepower is approximately equal to 745.7 Watts
+
+    voltage *= (voltageUnit === 'kV' ? 1000 : 
+                (voltageUnit === 'mV' ? 0.001 : 1));
+
+    //convert eff to decmil
+        eff = eff/100;
 
     // Check if it's a three-phase system
     var isThreePhase = phaseType === 'Three Phase';
 
     if (solveFor === 'Power' && !isNaN(voltage) && !isNaN(current)) {
+        
         if(voltageType == "Line-Line")
         {
-            powerResult = isThreePhase ? Math.sqrt(3) * voltage * current * pf : voltage * current * pf ;
+            powerResult = isThreePhase ? Math.sqrt(3) * voltage * current * pf*eff : voltage * current * pf*eff;
         }
         else
         {
-            powerResult = isThreePhase ? 3 * voltage * current * pf : voltage * current * pf ;
+            powerResult = isThreePhase ? 3 * voltage * current * pf*eff : voltage * current * pf*eff ;
         }
         currentResult = current;
         voltageResult = voltage;
     } else if (solveFor === 'Voltage' && !isNaN(power) && !isNaN(current) && current !== 0) {
         if(voltageType == "Line-Line")
         {
-            voltageResult = isThreePhase ? power / (Math.sqrt(3) * current *pf) : power / (current*pf);
+            voltageResult = isThreePhase ? power / (Math.sqrt(3) * current *pf*eff) : power / (current*pf*eff);
         }
         else
         {
-            voltageResult = isThreePhase ? power / (3 * current*pf) : power / (current*pf);
+            voltageResult = isThreePhase ? power / (3 * current*pf*eff) : power / (current*pf*eff);
         }
-
 
         currentResult = current;
         powerResult = power;
     } else if (solveFor === 'Current' && !isNaN(power) && !isNaN(voltage) && voltage !== 0) {
         if(voltageType == "Line-Line")
         {
-            currentResult = isThreePhase ? power / (Math.sqrt(3) * voltage *pf) : power /(voltage *pf);
+            currentResult = isThreePhase ? power / (Math.sqrt(3) * voltage *pf*eff ): power /(voltage *pf*eff );
         }
         else
         {
-            currentResult = isThreePhase ? power / (3 * voltage *pf) : power / (voltage *pf);
+            currentResult = isThreePhase ? power / (3 * voltage *pf*eff) : power / (voltage *pf*eff);
         }
 
         voltageResult = voltage;
@@ -78,7 +89,10 @@ function calculateResults() {
     voltageResult = voltageResult > 1000 ? voltageResult / 1000 : voltageResult;
     currentResultUnit = currentResult > 1000 ? "kA" : "A";
     currentResult = currentResult > 1000 ? currentResult / 1000 : currentResult;
-
+    powerAppResultUnit = powerS > 1000 ? "KVA" : "VA";
+    powerS = powerS > 1000 ? powerS / 1000 : powerS;
+    powerReactiveResultUnit = powerQ > 1000 ? "KVAR" : "VAR";
+    powerQ = powerQ > 1000 ? powerQ / 1000 : powerS;
 
     //Update Result values here:
 
@@ -92,9 +106,20 @@ function calculateResults() {
     document.getElementById('resultPowerActive').textContent = powerResult.toFixed(1) + " " + powerResultUnit;
     document.getElementById('resultPowerReactive').textContent = powerQ.toFixed(1) + " " + powerReactiveResultUnit;
 
-        //draw chart
-        updateChart(powerResult, powerQ, powerS);
+    //draw chart
+    updateChart(powerResult, powerQ, powerS);
 
+    //update log
+    inputHistory = "Power: " + powerResult.toFixed(1) + " " + powerResultUnit + 
+    " Voltage: " + voltageResult.toFixed(1) + " " + voltageResultUnit +
+     " Current: " + currentResult.toFixed(1) + " " + currentResultUnit;
+
+    // In your calculateResults function, after you've calculated the results, call updateMathLog with the actual values
+    var voltageDisplay = voltageResult.toFixed(1) + " " + voltageResultUnit;
+    var currentDisplay = currentResult.toFixed(1) + " " + currentResultUnit;
+    var powerMath = powerResult.toFixed(1) + " " + powerResultUnit;
+    updateMathLog(voltageDisplay, currentDisplay, pf.toFixed(2), eff, powerMath);
+    updateResultMath(voltageDisplay, currentDisplay, pf.toFixed(2), eff, powerMath,solveFor, phaseType);
 
 }
 
@@ -153,8 +178,25 @@ document.getElementById('voltageInput').addEventListener('input', function() {
 // Input validation for the Current input field
 document.getElementById('currentInput').addEventListener('input', function() {
     validateInput(this, 'currentWarning');
-    console.log("Input");
 });
+// Input validation for the Current input field
+document.getElementById('pfInput').addEventListener('input', function() {
+    validateInput(this, 'pfWarning');
+});
+document.getElementById('effInput').addEventListener('input', function() {
+    const value = parseFloat(this.value); // Convert input value to a floating-point number
+
+    // Check if the value is between 0 and 1
+    if (value < 0 || value > 100 || isNaN(value)) {
+        // If not, show the warning message
+        document.getElementById('effWarning').style.display = 'block';
+        document.getElementById('effWarning').textContent = 'Please enter a valid number between 0 and 100.';
+    } else {
+        // If the value is valid, hide the warning message
+        document.getElementById('effWarning').style.display = 'none';
+    }
+});
+
 
 function validateInput(inputElement, warningElementId) {
     var value = inputElement.value.trim();
@@ -240,6 +282,44 @@ function updateChart(realPower, reactivePower, apparentPower) {
     });
 }
 
-// Example usage, call this function with actual values after calculation
-// updateChart(powerResult, powerQ, powerS);
+function updateMathLog(voltage, current, pf, eff, powerMath) {
+    var mathLog = document.getElementById('threePhaseFormula');
+    var threePhaseResult = document.getElementById('threePhaseFormulaResult');
+    // Format efficiency for display (as a percentage)
+    var effDisplay = (eff * 100).toFixed(0) + '%';
 
+    // Update the content with the new formula
+    mathLog.innerHTML = `<p>$$ P = \\sqrt{3} \\times ${voltage} \\times ${current} \\times ${pf} \\times ${effDisplay} $$</p>`;
+    threePhaseResult.innerHTML=`<p>$$ P = ${powerMath} $$</p>`;
+    // Request MathJax to typeset the new content
+    MathJax.typesetPromise([mathLog]);
+    MathJax.typesetPromise([threePhaseResult]);
+}
+
+
+function updateResultMath(voltage, current, pf, eff, powerMath,solve, phase) {
+    var resultFormula = document.getElementById('resultFormula');
+    var resultMath = document.getElementById('resultMath');
+    var resultResult = document.getElementById('resultResult');
+    // Format efficiency for display (as a percentage)
+    var effDisplay = (eff * 100).toFixed(0) + '%';
+    // Update the content with the new formula
+    //Three Phase Line to Line Formula:
+    console.log(phase);
+    // Three Phase Line to Line Formula:
+    if (solve == "Power" && phase == "Three Phase") {
+        resultFormula.innerHTML = `<p>$$ P_{\\text{three-phase}} = \\sqrt{3} \\times V_{L} \\times I_{L} \\times PF \\times EFF $$</p>`;
+        resultMath.innerHTML = `<p>$$ P = \\sqrt{3} \\times ${voltage} \\times ${current} \\times ${pf} \\times ${effDisplay} $$</p>`;
+        resultResult.innerHTML = `<p>$$ P = ${powerMath} $$</p>`;
+    } 
+
+    // Single Phase Formula:
+    else if (solve == "Power" && phase =="Single Phase" ) {
+        resultFormula.innerHTML = `<p>$$ P_{\\text{single-phase}} = V \\times I \\times PF \\times EFF $$</p>`;
+        resultMath.innerHTML = `<p>$$ P = ${voltage} \\times ${current} \\times ${pf} \\times ${effDisplay} $$</p>`;
+        resultResult.innerHTML = `<p>$$ P = ${powerMath} $$</p>`;
+    }
+
+    // Request MathJax to typeset the new content
+    MathJax.typesetPromise([resultFormula, resultMath, resultResult]);
+}
