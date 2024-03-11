@@ -9,6 +9,7 @@ function calculateResults() {
     var current = parseFloat(document.getElementById('currentInput').value);
     var pf = parseFloat(document.getElementById('pfInput').value);
     var eff = parseFloat(document.getElementById('effInput').value);
+    var amountContinue = parseFloat(document.getElementById('loadContinueAmount').value);
     var phaseType = document.querySelector('input[name="phaseType"]:checked').value;
 
     var result = 0;
@@ -23,7 +24,7 @@ function calculateResults() {
     var powerS = 0;
     var powerQ = 0;
     var inputHistory =""
-    var outputHistory ="";
+
 
 
     // Convert all values to base units (Watts, Volts, Amps)
@@ -106,6 +107,15 @@ function calculateResults() {
     document.getElementById('resultPowerActive').textContent = powerResult.toFixed(1) + " " + powerResultUnit;
     document.getElementById('resultPowerReactive').textContent = powerQ.toFixed(1) + " " + powerReactiveResultUnit;
 
+    //Get cable size
+    //calc required cable ampacity based on load type
+    var amountNonContinue = 100-amountContinue;
+    var ampsRequired = currentResult*(amountNonContinue/100) + currentResult*(amountContinue/100)*1.25;
+    console.log(currentResult);
+    console.log("Amps Required Calculated: " + ampsRequired);
+    var cableSelected = selectCableSize(ampsRequired);
+    document.getElementById('resultCableSize').innerHTML = cableSelected;
+
     //draw chart
     updateChart(powerResult, powerQ, powerS);
 
@@ -118,7 +128,6 @@ function calculateResults() {
     var voltageDisplay = voltageResult.toFixed(1) + " " + voltageResultUnit;
     var currentDisplay = currentResult.toFixed(1) + " " + currentResultUnit;
     var powerMath = powerResult.toFixed(1) + " " + powerResultUnit;
-    updateMathLog(voltageDisplay, currentDisplay, pf.toFixed(2), eff, powerMath);
     updateResultMath(voltageDisplay, currentDisplay, pf.toFixed(2), eff, powerMath,solveFor, phaseType);
 
 }
@@ -282,19 +291,6 @@ function updateChart(realPower, reactivePower, apparentPower) {
     });
 }
 
-function updateMathLog(voltage, current, pf, eff, powerMath) {
-    var mathLog = document.getElementById('threePhaseFormula');
-    var threePhaseResult = document.getElementById('threePhaseFormulaResult');
-    // Format efficiency for display (as a percentage)
-    var effDisplay = (eff * 100).toFixed(0) + '%';
-
-    // Update the content with the new formula
-    mathLog.innerHTML = `<p>$$ P = \\sqrt{3} \\times ${voltage} \\times ${current} \\times ${pf} \\times ${effDisplay} $$</p>`;
-    threePhaseResult.innerHTML=`<p>$$ P = ${powerMath} $$</p>`;
-    // Request MathJax to typeset the new content
-    MathJax.typesetPromise([mathLog]);
-    MathJax.typesetPromise([threePhaseResult]);
-}
 
 
 function updateResultMath(voltage, current, pf, eff, powerMath,solve, phase) {
@@ -302,7 +298,7 @@ function updateResultMath(voltage, current, pf, eff, powerMath,solve, phase) {
     var resultMath = document.getElementById('resultMath');
     var resultResult = document.getElementById('resultResult');
     // Format efficiency for display (as a percentage)
-    var effDisplay = (eff * 100).toFixed(0) + '%';
+    var effDisplay = eff.toFixed(2) + '%';
     // Update the content with the new formula
     //Three Phase Line to Line Formula:
     console.log(phase);
@@ -320,6 +316,78 @@ function updateResultMath(voltage, current, pf, eff, powerMath,solve, phase) {
         resultResult.innerHTML = `<p>$$ P = ${powerMath} $$</p>`;
     }
 
+    else if (solve == "Voltage" && phase == "Three Phase") {
+        resultFormula.innerHTML = `<p>$$ V_{L} = \\frac{P}{\\sqrt{3} \\times I_{L} \\times PF \\times EFF} $$</p>`;
+        resultMath.innerHTML = `<p>$$ V_{L} = \\frac{${powerMath}}{\\sqrt{3} \\times ${current} \\times ${pf} \\times ${effDisplay}} $$</p>`;
+        resultResult.innerHTML = `<p>$$ V_{L} = ${voltage} $$</p>`;
+    } 
+    else if (solve == "Voltage" && phase == "Single Phase") {
+        resultFormula.innerHTML = `<p>$$ V = \\frac{P}{I \\times PF \\times EFF} $$</p>`;
+        resultMath.innerHTML = `<p>$$ V = \\frac{${powerMath}}{${current} \\times ${pf} \\times ${effDisplay}} $$</p>`;
+        resultResult.innerHTML = `<p>$$ V = ${voltage} $$</p>`;
+    }
+
+    else if (solve == "Current" && phase == "Three Phase") {
+        // For three-phase, solving for current
+        resultFormula.innerHTML = `<p>$$ I_{L} = \\frac{P}{\\sqrt{3} \\times V_{L} \\times PF \\times EFF} $$</p>`;
+        resultMath.innerHTML = `<p>$$ I = \\frac{${powerMath}}{\\sqrt{3} \\times ${voltage} \\times ${pf} \\times ${effDisplay}} $$</p>`;
+        resultResult.innerHTML = `<p>$$ I = ${current} $$</p>`;
+    } else if (solve == "Current" && phase == "Single Phase") {
+        // For single-phase, solving for current
+        resultFormula.innerHTML = `<p>$$ I = \\frac{P}{V \\times PF \\times EFF} $$</p>`;
+        resultMath.innerHTML = `<p>$$ I = \\frac{${powerMath}}{${voltage} \\times ${pf} \\times ${effDisplay}} $$</p>`;
+        resultResult.innerHTML = `<p>$$ I = ${current} $$</p>`;
+    }
+
+    
+
+    else{
+        resultFormula.innerHTML = "";
+        resultMath.innerHTML = "";
+        resultResult.innerHTML = "";
+    }
+
     // Request MathJax to typeset the new content
     MathJax.typesetPromise([resultFormula, resultMath, resultResult]);
 }
+
+
+
+
+//Cable Sizing:
+function selectCableSize(current) {
+    const cableSizes75 = [
+        { current: 20, size: '14 AWG' },
+        { current: 25, size: '12 AWG' },
+        { current: 35, size: '10 AWG' },
+        { current: 50, size: '8 AWG' },
+        { current: 65, size: '6 AWG' },
+        { current: 85, size: '4 AWG' },
+        { current: 100, size: '3 AWG' },
+        { current: 115, size: '2 AWG' },
+        { current: 130, size: '1 AWG' },
+        { current: 150, size: '1/0' },
+        { current: 175, size: '2/0' },
+        { current: 200, size: '3/0' },
+        { current: 230, size: '4/0' },
+        { current: 255, size: '250' },
+        { current: 285, size: '300' },
+        { current: 310, size: '350' },
+        { current: 335, size: '400' },
+        { current: 380, size: '500' },
+        { current: 420, size: '600' },
+        { current: 460, size: '700' },
+        { current: 475, size: '750' },
+    ];
+
+    // Find the smallest cable size that can handle the current
+    const suitableCable = cableSizes75.find(cable => cable.current >= current);
+
+    if (suitableCable) {
+        return suitableCable.size;
+    } else {
+        throw new Error('Current exceeds the capacity of standard cable sizes');
+    }
+}
+
+
