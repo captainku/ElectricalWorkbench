@@ -3,316 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElectricalWorkbench</title>
-    <link rel="icon" href="Static/favicon.ico" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link href="styles.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
+    <title>Electrical Workbench</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #007bff;
+            margin: 0 15px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="mt-4 mb-4">Electrical Workbench</h1>
-    <div class="row">
-        
-        <!-- Input Column -->
-        <div class="col-md-4">
-            <h2 class="mb-4 text-center">Inputs</h2>
-            <form>
-                <!-- Row for Solve For and Phase Type -->
-                <div class="row">
-                    <!-- Solve For Dropdown Column -->
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="solveFor" class="form-label">Solve For</label>
-                            <select class="form-select" id="solveFor">
-                                <option value="Power">Power</option>
-                                <option value="Voltage">Voltage</option>
-                                <option value="Current">Current</option>
-                            </select>
-                        </div>
-                    </div>
+<header>
+    <h1>Electrical Workbench</h1>
+    <p>Your trusted partner in electrical solutions.</p>
+</header>
 
-                    <!-- Phase Type Radio Buttons Column -->
-                    <div class="col-md-6">
-                        <label class="form-label">Phase Type</label>
-                        <div class="d-block">
-                            <!-- Single Phase -->
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="phaseType" id="singlePhase" value="Single Phase" checked>
-                                <label class="form-check-label" for="singlePhase">
-                                    Single Phase
-                                </label>
-                            </div>
-                            <!-- Three Phase -->
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="phaseType" id="threePhase" value="Three Phase">
-                                <label class="form-check-label" for="threePhase">
-                                    Three Phase
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Power Input Group -->
-                <div class="mb-3">
-                    <label for="powerInputGroup" class="form-label">Power</label>
-                    <div class="input-group" id="powerInputGroup">
-                        <input type="number" step="any" class="form-control" id="powerInput" placeholder="Enter Power" style="width: 50%;">
-                        <select class="form-select" id="powerUnit" style="width: 25%;">
-                            <option value="W">W</option>
-                            <option value="kW">kW</option>
-                            <option value="MW">MW</option>
-                            <option value="Hp">Hp</option>
-                        </select>
-                    </div>
-                    <div id="powerWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
-                </div>
+<nav>
+    <a href="services.html">Services</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+</nav>
 
-         
+<article>
+    <p>Welcome to Electrical Workbench, where we offer professional electrical services for both residential and commercial needs. From installations to repairs, our team is here to ensure your projects are powered correctly and safely.</p>
+</article>
 
-                <div class="mb-3">
-                    <label for="voltageInputGroup" class="form-label">Voltage</label>
-                    <div class="input-group" id="voltageInputGroup">
-                        <!-- Voltage Input -->
-                        <input type="number" step="any" class="form-control" id="voltageInput" placeholder="Enter Voltage" style="width: 45%;">
-                    
+<footer>
+    <p>&copy; 2024 Electrical Workbench. All rights reserved.</p>
+</footer>
 
-                        <!-- Units Dropdown -->
-                        <select class="form-select" id="voltageUnit" style="width: 20%;">
-                            <option value="V">V</option>
-                            <option value="kV">kV</option>
-                            <option value="mV">mV</option>
-                        </select>
-                
-                        <!-- Voltage Type Dropdown -->
-                        <select class="form-select" id="voltageType" style="width: 35%;">
-                            <option value="Line-Line">Line-Line</option>
-                            <option value="Line-Neutral">Line-Neutral</option>
-                        </select>
-
-                        <div id="voltageWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
-                    </div>
-                </div>
-                
-                
-                
-                <!-- Current Input Group -->
-                <div class="row g-2 mb-3">
-                    <!-- Current Input -->
-                    <div class="col me-3">
-                        <label for="currentInput" class="form-label">Current (A)</label>
-                        <input type="number" step="any" class="form-control" id="currentInput" placeholder="Enter Current">
-                        <div id="currentWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
-                    </div>
-                    <!-- Power Factor Input -->
-                    <div class="col me-3">
-                        <label for="pfInput" class="form-label">Power Factor</label>
-                        <input type="number" step="any" class="form-control" id="pfInput" placeholder="Enter PF" value="1">
-                        <div id="pfWarning" class="form-text text-warning" style="display: none;">Please enter a valid number.</div>
-                    </div>
-                    <!-- Load Eff Input -->
-                    <div class="col me-3">
-                        <label for="effInput" class="form-label">Efficiency (%)</label>
-                        <input type="number" class="form-control" id="effInput" placeholder="Enter Efficiency (0-100%)" min="0" max="100" step="0.1" value="100">
-                        <div id="effWarning" class="form-text text-warning" style="display: none;">Please enter a valid number between 0 and 100.</div>
-                    </div>
-
-                </div>
-           
-               <!-- Advanced Cable Inputs Section -->
-                <div class="mt-4">
-                    <h5 class="mb-3 text-center"><i class="bi bi-plug"></i> Advanced Cable Inputs</h5>
-                </div>                
-                <div class="row g-2 mb-3">
-                    <!--Row 1 of Cable Inputs-------------------->
-                    <!-- Cable Length Input -->
-                    <div class="col me-3">
-                        <div class="mb-3">
-                            <label for="cableLengthInput" class="form-label">Cable Length (Feet)</label>
-                            <input type="number" step="any" class="form-control" id="cableLengthInput" placeholder="Enter Cable Length" value=100>
-                        </div>
-                    </div>
-                     <!-- Cable Temp Rating Input -->
-                        <div class="col me-3">
-                            <label for="cableTempRatingSelect" class="form-label">Cable Temp Rating (°C)</label>
-                            <select class="form-select" id="cableTempRatingSelect">
-                                <option value="60">60°C</option>
-                                <option value="75" selected>75°C</option> <!-- Set this option as selected by default -->
-                                <option value="90">90°C</option>
-                            </select>
-                        </div>
-                    <!--Row 2 of Cable Inputs-------------------->
-                                    <!-- Temp Input Group -->
-                    <div class="row g-2 mb-3">
-                            <!-- Termination Temp Rating Input -->
-                        <div class="col me-3">
-                            <label for="termTempRatingSelect" class="form-label">Term Temp Rating (°C)</label>
-                            <select class="form-select" id="termTempRatingSelect">
-                                <option value="60">60°C</option>
-                                <option value="75" selected>75°C</option> <!-- Set this option as selected by default -->
-                                <option value="90">90°C</option>
-                            </select>
-                        </div>
-                            <!-- Ambient Temperature Input -->
-                        <div class="col me-3">
-                            <label for="ambientTempInput" class="form-label">Ambient Temp (°C)</label>
-                            <input type="number" step="any" class="form-control" id="ambientTempInput" placeholder="Enter Ambient Temperature" value=30>
-                            <div id="effWarning" class="form-text text-warning" style="display: none;">Please enter a valid number between 0 and 100.</div>
-                        </div>
-                    </div>
-                    <!--Row 3 of Cable Inputs-------------------->
-                        <!-- Temp Input Group -->
-                    <div class="row g-2 mb-3">
-                            <!-- Continuous input-->
-                            <div class="col me-3">
-                                <label for="loadContinueAmount" class="form-label">% of Continuous Load</label>
-                                <input type="number" step="any" class="form-control" id="loadContinueAmount" placeholder="% Continuous" value=100>
-                                <div id="effWarning" class="form-text text-warning" style="display: none;">Please enter a valid number between 0 and 100.</div>
-                            </div>
-                    </div>
-                </div>
-
-
-                <!-- Calculate Button with onclick attribute -->
-                <div class="mb-3">
-                    <button type="button" onclick="calculateResults()" class="btn btn-primary">Calculate</button>
-                </div>
-
-            </form>
-
-
-        </div>
-<!-- Results Column -->
-<div class="col-md-6 shadow"  id="resultsSection">
-    <h2 class="mb-4 text-center">Results</h2>
-    <div class="row g-4 text-center">
-        <!-- Power Result -->
-        <div class="col-md-4">
-            <p class="result-value" id="resultPower">---</p>
-            <p>Power</p>
-        </div>
-
-        <!-- Voltage Result -->
-        <div class="col-md-4">
-            <p class="result-value" id="resultVoltage">---</p>
-            <p>Voltage</p>
-        </div>
-
-        <!-- Current Result -->
-        <div class="col-md-4">
-            <p class="result-value" id="resultCurrent">---</p>
-            <p>Current</p>
-        </div>
-
-         <!-- Power Factor Result -->
-        <div class="col-md-4">
-            <p class="result-value" id="resultPf">---</p>
-            <p>Power Factor</p>
-        </div>
-
-        <!-- Phase Type Result -->
-        <div class="col-md-4">
-            <p class="result-value" id="resultPhaseType">---</p>
-            <p>Phase Type</p>
-        </div>
-
-        <!-- Voltage Type Result -->
-        <div class="col-md-4">
-            <p class="result-value"  id="resultVoltageType">---</p>
-            <p>Voltage Type</p>
-        </div>
-    </div>
-    <div class="advanced-results-divider">
-        <hr>
-        <span>Advanced Results</span>
-    </div>
-        <div class="row g-4 text-center">
-             <!-- Power Factor Result -->
-             <div class="col-md-4">
-                <p class="result-value" id="resultPowerApp">---</p>
-                <p>Apparent Power</p>
-            </div>
-            <!-- Phase Type Result -->
-            <div class="col-md-4">
-                <p class="result-value" id="resultPowerActive">---</p>
-                <p>Active Power</p>
-            </div>
-    
-            <!-- Voltage Type Result -->
-            <div class="col-md-4">
-                <p class="result-value"  id="resultPowerReactive">---</p>
-                <p>Reactive Power</p>
-            </div>
-        </div>
-        <div class="row g-4 text-center">
-            <!-- Power Factor Result -->
-            <div class="col-md-4">
-               <p class="result-value" id="resultCableSize">---</p>
-               <p>Cable Selected</p>
-           </div>
-       </div>
-        
-        <!--Equation Result Section-->
-        <div  style="max-height: 200px; overflow-y: auto;">
-            <!-- Three-Phase Power Formula with placeholders -->
-            <p id="resultFormula"></p>
-            <p id="resultMath"></p>
-            <p id="resultResult"></p>
-        </div>
-        <div id="chartContainer" class="text-center mt-5">
-            <canvas id="myChart"></canvas>
-        </div>
-        
-</div>
-
-
-<!-- Math Log Column -->
-<div class="col-md-12 mt-5">
-    <h2 class="mb-4 text-center">Math Zone</h2>
-    <div class="row">
-        <!-- Column for Three Phase Formulas -->
-        <div class="col-md-6">
-            <h3 class="text-center">Three Phase Formulas</h3>
-            <div class="math-log" id="mathLogThreePhase" style="max-height: 300px; overflow-y: auto;">
-                <!-- Three-Phase Power Formula with placeholders -->
-                <p id="threePhaseFormulaEx">$$ P = \sqrt{3} \times V_L \times I_L \times PF \times EFF $$</p>
-                <!-- Three-Phase Voltage Formula with placeholders -->
-                <p>$$ V_L = \frac{P}{\sqrt{3} \times I_L \times PF \times EFF} $$</p>
-                <!-- Three-Phase Current Formula with placeholders -->
-                <p>$$ I_L = \frac{P}{\sqrt{3} \times V_L \times PF \times EFF} $$</p>
-                <p id="threePhaseFormula"></p>
-                <p id="threePhaseFormulaResult"></p>
-            </div>
-        </div>
-
-        <!-- Column for Single Phase Formulas -->
-        <div class="col-md-6">
-            <h3 class="text-center">Single Phase Formulas</h3>
-            <div class="math-log" id="mathLogSinglePhase" style="max-height: 300px; overflow-y: auto;">
-                <!-- Single-Phase Power Formula with placeholders -->
-                <p id="singlePhaseFormulaEx">$$ P = V \times I \times PF \times EFF $$</p>
-                <!-- Single-Phase Voltage Formula with placeholders -->
-                <p>$$ V = \frac{P}{I \times PF \times EFF} $$</p>
-                <!-- Single-Phase Current Formula with placeholders -->
-                <p>$$ I = \frac{P}{V \times PF \times EFF} $$</p>
-                <p id="singlePhaseFormula"></p>
-                <p id="singlePhaseFormulaResult"></p>
-            </div>
-        </div>
-    </div>
-</div>
-
-        
-
-
-
-
-<script src="calculator.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
