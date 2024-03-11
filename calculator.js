@@ -9,7 +9,7 @@ function calculateResults() {
     var current = parseFloat(document.getElementById('currentInput').value);
     var pf = parseFloat(document.getElementById('pfInput').value);
     var eff = parseFloat(document.getElementById('effInput').value);
-    var amountContinue = parseFloat(document.getElementById('loadContinueAmount').value);
+    //var amountContinue = parseFloat(document.getElementById('loadContinueAmount').value);
     var phaseType = document.querySelector('input[name="phaseType"]:checked').value;
 
     var result = 0;
@@ -109,13 +109,13 @@ function calculateResults() {
 
     //Get cable size
     //calc required cable ampacity based on load type
-    var amountNonContinue = 100-amountContinue;
+   /* var amountNonContinue = 100-amountContinue;
     var ampsRequired = currentResult*(amountNonContinue/100) + currentResult*(amountContinue/100)*1.25;
     console.log(currentResult);
     console.log("Amps Required Calculated: " + ampsRequired);
     var cableSelected = selectCableSize(ampsRequired);
     document.getElementById('resultCableSize').innerHTML = cableSelected;
-
+    */
     //draw chart
     updateChart(powerResult, powerQ, powerS);
 

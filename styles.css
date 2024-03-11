@@ -1,6 +1,8 @@
 /* Custom CSS for the results section */
 #resultsSection {
-    padding-top: 30px; /* Add padding to the top for spacing */
+    background-color: #0b3f51;
+    border-radius: 15px 15px 0 0; /* top-left, top-right, bottom-right, bottom-left */
+    
 }
 
 .result-card {
@@ -20,6 +22,12 @@
     color: #6c757d; /* Set text color */
     margin-bottom: 0; /* Remove bottom margin */
 }
+
+label {
+    font-family: 'Arial', sans-serif; /* Sets the font */
+    color: #ffffff; /* Dark grey color for text */
+}
+
 
 
 .advanced-results-divider {
@@ -83,7 +91,7 @@
     font-family: Arial, sans-serif;
     margin: 40px;
     text-align: center;
-    background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+    background: #0d2439;
 
 }
 
@@ -135,10 +143,22 @@ header {
 header h1 {
     font-family: 'Roboto', sans-serif;
     font-size: 2.5rem; /* Adjust size as needed */
-    font-weight: 700; /* Roboto's bold weight */
-    color: #000000; 
+    font-weight: 300; /* Roboto's bold weight */
+    color: #ffffff; 
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for depth */
 }
+ h5, h4, h3, h2, h6 {
+    font-family: 'Roboto', sans-serif;
+    color: #daa521; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+}
+p  {
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff; 
+   
+}
+
+
 
 
 .btn-primary {
@@ -155,10 +175,13 @@ header h1 {
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for hover */
+    background-color: #0b3f51;
 }
 
 .card:hover {
     transform: translateY(-5px); /* Slightly raise the card on hover */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
 }
+
+
 
