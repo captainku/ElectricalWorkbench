@@ -41,7 +41,7 @@ function calculateResults() {
     // Check if it's a three-phase system
     var isThreePhase = phaseType === 'Three Phase';
 
-    if (solveFor === 'Power' && !isNaN(voltage) && !isNaN(current)) {
+    if (solveFor === 'power' && !isNaN(voltage) && !isNaN(current)) {
         
         if(voltageType == "Line-Line")
         {
@@ -53,7 +53,7 @@ function calculateResults() {
         }
         currentResult = current;
         voltageResult = voltage;
-    } else if (solveFor === 'Voltage' && !isNaN(power) && !isNaN(current) && current !== 0) {
+    } else if (solveFor === 'voltage' && !isNaN(power) && !isNaN(current) && current !== 0) {
         if(voltageType == "Line-Line")
         {
             voltageResult = isThreePhase ? power / (Math.sqrt(3) * current *pf*eff) : power / (current*pf*eff);
@@ -65,7 +65,7 @@ function calculateResults() {
 
         currentResult = current;
         powerResult = power;
-    } else if (solveFor === 'Current' && !isNaN(power) && !isNaN(voltage) && voltage !== 0) {
+    } else if (solveFor === 'current' && !isNaN(power) && !isNaN(voltage) && voltage !== 0) {
         if(voltageType == "Line-Line")
         {
             currentResult = isThreePhase ? power / (Math.sqrt(3) * voltage *pf*eff ): power /(voltage *pf*eff );
@@ -135,36 +135,39 @@ function calculateResults() {
 
 
 document.getElementById('solveFor').addEventListener('change', function() {
+    console.log("Ran Disable function");
     var selectedOption = this.value;
 
-    // Reset placeholders for all inputs
-    document.getElementById('powerInput').placeholder = "Enter Power";
-    document.getElementById('voltageInput').placeholder = "Enter Voltage";
-    document.getElementById('currentInput').placeholder = "Enter Current";
+    // List of all input elements and their corresponding units dropdowns
+    var inputs = [
+        { input: 'powerInput', unit: 'powerUnit' },
+        { input: 'voltageInput', unit: 'voltageUnit' },
+        { input: 'currentInput', unit: null } // No unit dropdown for current input
+    ];
 
-    // Enable all inputs and dropdowns
-    document.getElementById('powerInput').disabled = false;
-    document.getElementById('powerUnit').disabled = false;
-    document.getElementById('voltageInput').disabled = false;
-    document.getElementById('voltageUnit').disabled = false;
-    document.getElementById('currentInput').disabled = false;
+    inputs.forEach(function(item) {
+        var inputElement = document.getElementById(item.input);
+        var unitElement = item.unit ? document.getElementById(item.unit) : null;
 
-    // Update placeholder and disable input for the selected "Solve For" option
-    if (selectedOption === 'Power') {
-        document.getElementById('powerInput').disabled = true;
-        document.getElementById('powerUnit').disabled = true;
-        document.getElementById('powerInput').value='';
-        document.getElementById('powerInput').placeholder = "Solving For Power";
-    } else if (selectedOption === 'Voltage') {
-        document.getElementById('voltageInput').disabled = true;
-        document.getElementById('voltageUnit').disabled = true;
-        document.getElementById('voltageInput').value='';
-        document.getElementById('voltageInput').placeholder = "Solving For Voltage";
-    } else if (selectedOption === 'Current') {
-        document.getElementById('currentInput').disabled = true;
-        document.getElementById('currentInput').placeholder = "Solving For Current";
-        document.getElementById('currentInput').value='';
-    }
+        // Reset and enable all inputs and dropdowns
+        inputElement.disabled = false;
+        inputElement.value = '';
+        inputElement.placeholder = "Enter " + item.input.replace('Input', '');
+
+        if (unitElement) {
+            unitElement.disabled = false;
+        }
+        console.log("Selected Option: " + selectedOption + "Is Equal to" + item.input);
+        // Disable the selected input and its unit dropdown, if applicable
+        if (selectedOption === item.input.replace('Input', '')) {
+            inputElement.disabled = true;
+            inputElement.placeholder = "Solving For " + selectedOption;
+
+            if (unitElement) {
+                unitElement.disabled = true;
+            }
+        }
+    });
 });
 
 // Trigger change event on page load to set initial state
