@@ -13,15 +13,21 @@
 
 .result-value {
     font-size: 24px; /* Set font size for result value */
-    color: #486581; /* Set text color */
+    color: #ffbe0b; /* Set text color */
     margin-bottom: 5px; /* Add bottom margin for spacing */
 }
 
 .result-label {
     font-size: 18px; /* Set font size for result label */
-    color: #6c757d; /* Set text color */
+    color: #8ecae6; /* Set text color */
     margin-bottom: 0; /* Remove bottom margin */
 }
+
+#resultsSection .highlighted-result {
+    color: #fb8500 !important;
+    font-weight: bold !important;
+}
+
 
 label {
     font-family: 'Arial', sans-serif; /* Sets the font */

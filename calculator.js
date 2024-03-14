@@ -1,4 +1,7 @@
 
+//create chart on load:
+updateChart(1, 1, 1);
+
 function calculateResults() {
     var solveFor = document.getElementById('solveFor').value;
     var power = parseFloat(document.getElementById('powerInput').value);
@@ -93,9 +96,30 @@ function calculateResults() {
     powerAppResultUnit = powerS > 1000 ? "KVA" : "VA";
     powerS = powerS > 1000 ? powerS / 1000 : powerS;
     powerReactiveResultUnit = powerQ > 1000 ? "KVAR" : "VAR";
-    powerQ = powerQ > 1000 ? powerQ / 1000 : powerS;
+    powerQ = powerQ > 1000 ? powerQ / 1000 : powerQ;
 
     //Update Result values here:
+        // First, remove the highlighted class from all result elements
+    document.querySelectorAll('.result-value').forEach(function(element) {
+        element.classList.remove('highlighted-result');
+    });
+
+        // Add the highlighted class to the corresponding result element
+    switch (solveFor) {
+        case 'power':
+            document.getElementById('resultPower').classList.add('highlighted-result');
+            break;
+        case 'voltage':
+            console.log("Adding class to voltage");
+            document.getElementById('resultVoltage').classList.add('highlighted-result');
+            break;
+        case 'current':
+            document.getElementById('resultCurrent').classList.add('highlighted-result');
+            break;
+    }
+
+
+
 
     document.getElementById('resultPower').textContent = powerResult.toFixed(1) + " " + powerResultUnit;
     document.getElementById('resultVoltage').textContent = voltageResult.toFixed(1) + " " + voltageResultUnit;
@@ -135,7 +159,11 @@ function calculateResults() {
 
 
 document.getElementById('solveFor').addEventListener('change', function() {
-    console.log("Ran Disable function");
+
+        // Remove the highlighted class from all result elements
+        document.querySelectorAll('.result-value').forEach(function(element) {
+            element.classList.remove('highlighted-result');
+        });
     var selectedOption = this.value;
 
     // List of all input elements and their corresponding units dropdowns
@@ -168,6 +196,8 @@ document.getElementById('solveFor').addEventListener('change', function() {
             }
         }
     });
+
+
 });
 
 // Trigger change event on page load to set initial state
