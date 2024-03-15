@@ -309,10 +309,33 @@ function updateChart(realPower, reactivePower, apparentPower) {
                 x: {
                     type: 'linear',
                     position: 'bottom',
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'white' // Change x-axis ticks color to white
+                    },
+                    title: {
+                        display: true,
+                        text: 'Your X Axis Title',
+                        color: 'white' // Change x-axis title color to white
+                    }
                 },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'white' // Change y-axis ticks color to white
+                    },
+                    title: {
+                        display: true,
+                        text: 'Your Y Axis Title',
+                        color: 'white' // Change y-axis title color to white
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'white' // Change legend labels to white
+                    }
                 }
             },
             elements: {
