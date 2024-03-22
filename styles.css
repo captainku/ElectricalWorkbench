@@ -204,3 +204,71 @@ select.form-select:disabled {
     background-color: #656667 !important; /* Custom background color */
     color: #f5f5f5 !important; /* Custom text color */
 }
+
+
+
+
+.converter-box {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 20px;
+    background-color: #0b3f51;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+.form-control, .btn, .form-select {
+    height: 50px;
+    border-radius: 5px;
+}
+.result-display {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Change this to center the content horizontally */
+
+    padding: 15px;
+    background-color: #0b3f51;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.result-display p {
+    margin: 0;
+    font-size: 20px;
+    color: #c9911e;
+    text-align: center; /* This is redundant when using flexbox for centering */
+}
+
+.conversion-history {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.conversion-history h3 {
+    text-align: center;
+    color: #c9911e;
+}
+
+.conversion-history ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.conversion-history li {
+    padding: 10px;
+    color: #d7c9a9;
+    font-size: 16px;
+    text-align: center; /* Ensure the content is centered */
+}
+
+.icon-divider {
+    display: flex;
+    justify-content: center; /* Center the icon horizontally */
+    margin-top: 10px; /* Space between the conversion text and the icon */
+}
+
+.bi-lightning-fill {
+    color: #c9911e; /* Use the theme's highlight color for the icon */
+    font-size: 1rem; /* Adjust the size of the icon */
+}
