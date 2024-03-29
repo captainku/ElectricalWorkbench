@@ -164,6 +164,12 @@ p  {
    
 }
 
+li{
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff; 
+   
+}
+
 
 
 
@@ -272,3 +278,45 @@ select.form-select:disabled {
     color: #c9911e; /* Use the theme's highlight color for the icon */
     font-size: 1rem; /* Adjust the size of the icon */
 }
+
+
+
+
+
+th{
+    color: #c9911e;
+}
+
+/* White text for table body */
+.table tbody td {
+    color: #fff; /* White text color */
+}
+
+
+
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    width: 25%; /* Adjust based on your table structure */
+    text-align: left;
+    padding: 8px; /* Adjust as needed */
+}
+
+/* Freeze header row */
+.table thead th {
+    position: sticky;
+    top: 0;
+
+    z-index: 1;
+}
+
+

@@ -49,64 +49,34 @@
             <!-- Circuit Ampacity Number Input with Icon -->
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="circuitAmpacity" class="form-label">Circuit Ampacity</label>
+                    <label for="circuitAmpacity" class="form-label">Continuous Current</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bi bi-lightning-charge"></i>
                         </span>
-                        <input type="number" class="form-control" id="circuitAmpacity" placeholder="Amps" value="15">
+                        <input type="number" class="form-control" id="circuitAmpacityCon" placeholder="Amps" value="15">
+                        <span class="input-group-text">Amps</span> <!-- This adds the "A" unit next to the input field -->
                     </div>
                 </div>
             </div>
-
-            <!-- Continuous Load Percentage Input with Icon -->
+                <!-- Circuit Ampacity Number Input with Icon -->
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="continuousLoad" class="form-label">Continuous Load (%)</label>
+                    <label for="circuitAmpacity" class="form-label">Non-Continuous Current</label>
                     <div class="input-group">
                         <span class="input-group-text">
-                            <i class="bi bi-hourglass-split"></i>
+                            <i class="bi bi-lightning-charge"></i>
                         </span>
-                        <input type="number" class="form-control" id="continuousLoad" placeholder="% Continuous" value="100">
+                        <input type="number" class="form-control" id="circuitAmpacityNonCon" placeholder="Amps" value="0">
+                        <span class="input-group-text">Amps</span> <!-- This adds the "A" unit next to the input field -->
                     </div>
                 </div>
             </div>
+            
         </div>
-
-
-
-                <!-- Derating Zone Inputs -->
-                <div class="mb-3">
-                    <label class="form-label">Derating Zone</label>
-                    <div class="row">
-                        <!-- Ambient Temperature Input -->
-                        <div class="col-md-6">
-                            <label for="ambientTemp" class="form-label">Ambient Temperature (C)</label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bi bi-thermometer-half"></i>
-                                </span>
-                                <input type="number" class="form-control" id="ambientTemp" placeholder="Temp" value="25">
-                            </div>
-                        </div>
-                        
-                <!-- Other Wires in Same Raceway Input with Icon -->
-                <div class="col-md-6">
-                    <label for="otherWires" class="form-label">+ Wires in Same Raceway</label>
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class="bi bi-wrench"></i>
-                        </span>
-                        <input type="number" class="form-control" id="otherWires" placeholder="Wires" value="0">
-                    </div>
-                </div>
-
-                    </div>
-                </div>
 
                 <!-- Cable Zone Inputs with Icons Inside Input Boxes -->
                 <div class="mb-3">
-                    <label class="form-label">Cable Zone <i class="bi bi-plug-fill"></i></label>
                     <div class="row">
                         <!-- Cable Material Input with Icon Inside Dropdown -->
                         <div class="col-md-6">
@@ -126,6 +96,8 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-rulers"></i></span>
                                 <input type="number" class="form-control" id="circuitLength" placeholder="Enter Circuit Length">
+                                <span class="input-group-text">Feet</span> 
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -142,6 +114,7 @@
                                     <option value="90">90°C</option>
                                     <option value="105">105°C</option>
                                 </select>
+                                <span class="input-group-text">&deg;C</span> 
                             </div>
                         </div>
                         
@@ -156,22 +129,49 @@
                                     <option value="90">90°C</option>
                                     <option value="105">105°C</option>
                                 </select>
+                                <span class="input-group-text">&deg;C</span> 
                             </div>
                         </div>
                     </div>
+
+
+                <!-- Derating Zone Inputs -->
+                <div class="mb-3">
+                    <div class="row">
+                        <!-- Ambient Temperature Input -->
+                        <div class="col-md-6">
+                            <label for="ambientTemp" class="form-label">Ambient Temperature</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-thermometer-half"></i>
+                                </span>
+                                <input type="number" class="form-control" id="ambientTemp" placeholder="Temp" value="25">
+                                <span class="input-group-text">&deg;C</span>
+                            </div>
+                        </div>
+                        
+                <!-- Other Wires in Same Raceway Input with Icon -->
+                <div class="col-md-6">
+                    <label for="otherWires" class="form-label">+ Wires in Same Raceway</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-wrench"></i>
+                        </span>
+                        <input type="number" class="form-control" id="otherWires" placeholder="Wires" value="0">
+                    </div>
                 </div>
 
-                    
+                    </div>
+                </div>
+
+                                <!-- Calculate Button centered with Bootstrap utility classes -->
+                    <div class="mb-3 mt-3 d-flex justify-content-center ">
+                        <button type="button" onclick="calculateCableSize()" class="btn btn-primary">Calculate</button>
+                    </div>
+                    </form>
+                </div>
 
 
-
-                
-            <!-- Calculate Button centered with Bootstrap utility classes -->
-            <div class="mb-3 d-flex justify-content-center">
-                <button type="button" onclick="calculateCableSize()" class="btn btn-primary">Calculate</button>
-            </div>
-            </form>
-        </div>
 
         <!-- Results Column -->
         <div class="col-md-6">
@@ -188,6 +188,63 @@
                 </div>
             </div>
         </div>
+
+
+        </div><!-- End of Input and Result Row-->
+<!--Start Calc Zone-->
+<div class="row mt-3" id="calculationArea" style="display: flex; width: 100%;">
+    
+    <!-- Column 1: Inputs -->
+    <div class="col" id="inputValues" style="flex: 20%;">
+        <h4>Input Values</h4>
+        <p><strong>Continuous Current:</strong> <span id="displayConLoad"></span></p>
+        <p><strong>Non-Continuous Current:</strong> <span id="displayNonConLoad"></span></p>
+    </div>
+    
+    <!-- Column 2: Calculation Steps -->
+    <div class="col" id="calculationSteps" style="flex: 60%;">
+        <h4>Calculation Steps</h4>
+        <ol>
+            <li>
+                Calculate the total sizing current: 125% of Continuous Load + 100% of Non-Continuous Load.
+                <ol type="a">
+                    <li id="calcSizingCurrent">Sizing Current = 1.25 x Continuous Current + Non-Continuous Current</li>
+                </ol>
+            </li>
+            <li>Select the smallest cable size that can handle the sizing current based on standard cable sizes.</li>
+                <ol type="a">
+                    <li id="stepsCableSelected">A size - cable is rated for - Amps</li>
+                </ol>
+            <li>Choose an appropriate overcurrent protection device that meets the sizing current requirements.</li>
+                <ol type="a">
+                    <li id="stepsOvercurrentSelected">A - A overcurrent device is > than the sizing current -</li>
+                </ol>
+        </ol>
+    </div>
+    
+    
+    <!-- Column 3: Results -->
+    <div class="col" id="results" style="flex: 20%;">
+        <h4>Results</h4>
+        <p>Selected Cable Size:<span id="resultCableSize2"></span></p>
+        <p>Selected Overcurrent Protection: <span id="resultOvercurrentProtection2"></span></p>
+    </div>
+    
+</div>
+
+
+<!--Start Explain Zone-->
+        <div class="col-md-12 mt-3">
+            <h2 class="mb-4 text-center">Note Zone</h2>
+            <div id="cableSizeTableContainer" class="table-responsive"></div>
+
+
+        </div>
+
+
+
+
+
     </div>
 </div>
 
