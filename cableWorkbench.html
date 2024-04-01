@@ -10,6 +10,9 @@
     <link href="styles.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 </head>
 <body>
 <!-- Navbar -->
@@ -191,46 +194,41 @@
 
 
         </div><!-- End of Input and Result Row-->
-<!--Start Calc Zone-->
-<div class="row mt-3" id="calculationArea" style="display: flex; width: 100%;">
-    
-    <!-- Column 1: Inputs -->
-    <div class="col" id="inputValues" style="flex: 20%;">
-        <h4>Input Values</h4>
-        <p><strong>Continuous Current:</strong> <span id="displayConLoad"></span></p>
-        <p><strong>Non-Continuous Current:</strong> <span id="displayNonConLoad"></span></p>
-    </div>
-    
-    <!-- Column 2: Calculation Steps -->
-    <div class="col" id="calculationSteps" style="flex: 60%;">
-        <h4>Calculation Steps</h4>
-        <ol>
-            <li>
-                Calculate the total sizing current: 125% of Continuous Load + 100% of Non-Continuous Load.
-                <ol type="a">
-                    <li id="calcSizingCurrent">Sizing Current = 1.25 x Continuous Current + Non-Continuous Current</li>
-                </ol>
-            </li>
-            <li>Select the smallest cable size that can handle the sizing current based on standard cable sizes.</li>
-                <ol type="a">
-                    <li id="stepsCableSelected">A size - cable is rated for - Amps</li>
-                </ol>
-            <li>Choose an appropriate overcurrent protection device that meets the sizing current requirements.</li>
-                <ol type="a">
-                    <li id="stepsOvercurrentSelected">A - A overcurrent device is > than the sizing current -</li>
-                </ol>
-        </ol>
-    </div>
-    
-    
-    <!-- Column 3: Results -->
-    <div class="col" id="results" style="flex: 20%;">
-        <h4>Results</h4>
-        <p>Selected Cable Size:<span id="resultCableSize2"></span></p>
-        <p>Selected Overcurrent Protection: <span id="resultOvercurrentProtection2"></span></p>
-    </div>
-    
-</div>
+
+        <div class="container">
+            <div class="row justify-content-start">
+                <div class="col-12">
+                    <div class="p-4 border rounded-3 bg-dark text-start">
+                        <h4 class="fw-bold text-white">Calculation Steps</h4>
+                        <ol class="ps-3 text-white">
+                            <li class="mb-3 stepList" >
+                                <span class="stepHeader">Calculate the total sizing current:</span>
+                                <!-- Additional explanatory text -->
+                                <small class="d-block mt-2 stepDetail">Sizing current is 125% of continuous load + 100% of non-continuous load.</small>
+                                <ol type="a" class="ps-4 mt-2">
+                                    <li id="calcSizingCurrent">Sizing Current = 1.25 x Continuous Current + Non-Continuous Current</li>
+                                </ol>
+                            </li>
+                            <li class="mb-3 stepList">
+                                <span class="stepHeader">Select the smallest cable size</span>
+                                <ol type="a" class="ps-4 mt-2">
+                                    <li id="stepsCableSelected">A size - cable is rated for - Amps</li>
+                                </ol>
+                            </li>
+                            <li class="stepList">
+                                <span class="stepHeader">Choose an appropriate overcurrent protection device</span>
+                                <ol type="a" class="ps-4 mt-2">
+                                    <li id="stepsOvercurrentSelected">A - A overcurrent device is > than the sizing current -</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
 
 
 <!--Start Explain Zone-->

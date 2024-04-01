@@ -320,3 +320,16 @@ th{
 }
 
 
+
+.stepHeader{
+    color: #56bca3;
+    font-size: 18px;
+}
+
+.stepList{
+    color: #56bca3;
+}
+
+.stepDetail{
+    color: white;
+}

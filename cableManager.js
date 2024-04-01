@@ -192,11 +192,11 @@ function generateCableSizeTable() {
         const sizeCell = document.createElement('td');
         sizeCell.textContent = cableSizes60[i].size;
         const current60Cell = document.createElement('td');
-        current60Cell.textContent = cableSizes60[i].current + ' A';
+        current60Cell.textContent = cableSizes60[i].current + 'A';
         const current75Cell = document.createElement('td');
-        current75Cell.textContent = cableSizes75[i].current + ' A';
+        current75Cell.textContent = cableSizes75[i].current + 'A';
         const current90Cell = document.createElement('td');
-        current90Cell.textContent = cableSizes90[i].current + ' A';
+        current90Cell.textContent = cableSizes90[i].current + 'A';
 
         row.appendChild(sizeCell);
         row.appendChild(current60Cell);
@@ -245,22 +245,29 @@ function updateCableResults(cableSize, overcurrentSize) {
 
 function updateSteps(currentCon, currentNonCon, currentSizing, cableSize, cableSizeRating, overcurrentSize){
         // Update the input values display
-        document.getElementById("displayConLoad").innerText = currentCon;
-        document.getElementById("displayNonConLoad").innerText = currentNonCon;
+        //document.getElementById("displayConLoad").innerText = currentCon;
+        //document.getElementById("displayNonConLoad").innerText = currentNonCon;
 
         //Update sizing current calculation step
-        document.getElementById("calcSizingCurrent").innerText = "Sizing Current = 1.25 x "+currentCon+ " + " + currentNonCon +" = " + currentSizing;
-
+        document.getElementById("calcSizingCurrent").innerHTML = 
+        "Sizing Current = 1.25 x <span style='color: red;'>" + currentCon + 
+        "</span> + <span style='color: red;'>" + currentNonCon + 
+        "</span> = <span style='color: blue;'>" + currentSizing + "</span>" + " Amps";
         //Update cable selected step:
-        document.getElementById("stepsCableSelected").innerText = "A size " + cableSize + " cable is rated for " + cableSizeRating + " Amps";
+        document.getElementById("stepsCableSelected").innerHTML = 
+        "A size <span style='color: blue;'>" + cableSize + 
+        "</span> cable is rated for <span style='color: blue;'>" + cableSizeRating + 
+        "</span> Amps";
 
         //Update overcurrent selected step
-        document.getElementById("stepsOvercurrentSelected").innerText = "A " + overcurrentSize + " A overcurrent device is > the sizing current:  " + currentSizing + " Amps";
-
+        document.getElementById("stepsOvercurrentSelected").innerHTML = 
+        "A <span style='color: blue;'>" + overcurrentSize + "A" +
+        "</span>  overcurrent device is &gt; the sizing current: <span style='color: blue;'>" + currentSizing + "</span> Amps";
+        
 
         //Results Update
-        document.getElementById("resultCableSize2").innerText = cableSize;
-        document.getElementById("resultOvercurrentProtection2").innerText = overcurrentSize ? overcurrentSize + " Amp" : 'Not Available';
+        //document.getElementById("resultCableSize2").innerText = cableSize;
+       // document.getElementById("resultOvercurrentProtection2").innerText = overcurrentSize ? overcurrentSize + " Amp" : 'Not Available';
 
 
 }
