@@ -250,19 +250,19 @@ function updateSteps(currentCon, currentNonCon, currentSizing, cableSize, cableS
 
         //Update sizing current calculation step
         document.getElementById("calcSizingCurrent").innerHTML = 
-        "Sizing Current = 1.25 x <span style='color: red;'>" + currentCon + 
-        "</span> + <span style='color: red;'>" + currentNonCon + 
-        "</span> = <span style='color: blue;'>" + currentSizing + "</span>" + " Amps";
+        "Sizing Current = 1.25 x <span style='color: #f5625d;'>" + currentCon + 
+        "</span> + <span style='color: #f5625d;'>" + currentNonCon + 
+        "</span> = <span style='color: #357960;'>" + currentSizing + "</span>" + " Amps";
         //Update cable selected step:
         document.getElementById("stepsCableSelected").innerHTML = 
-        "A size <span style='color: blue;'>" + cableSize + 
-        "</span> cable is rated for <span style='color: blue;'>" + cableSizeRating + 
+        "A size <span style='color: #357960;'>" + cableSize + 
+        "</span> cable is rated for <span style='color: #357960;'>" + cableSizeRating + 
         "</span> Amps";
 
         //Update overcurrent selected step
         document.getElementById("stepsOvercurrentSelected").innerHTML = 
-        "A <span style='color: blue;'>" + overcurrentSize + "A" +
-        "</span>  overcurrent device is &gt; the sizing current: <span style='color: blue;'>" + currentSizing + "</span> Amps";
+        "A <span style='color: #357960;'>" + overcurrentSize + "A" +
+        "</span>  overcurrent device is &gt; the sizing current: <span style='color: #357960;'>" + currentSizing + "</span> Amps";
         
 
         //Results Update
